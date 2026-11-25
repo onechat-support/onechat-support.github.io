@@ -105001,7 +105001,7 @@ a5.push(A.eS(B.t5,A.N(A.v("profile.blocked",B.f),b,b,b,b,b,b),c.gau0()))
 a5.push(B.bK)
 a5.push(A.eS(B.MN,A.N(A.v("profile.signOut",B.f),b,b,b,b,b,b),c.gau9()))
 a5.push(B.kg)
-a5.push(A.du(A.N("ONEchat \xb7 v2026.11.25.3",b,b,b,A.cw(b,b,A.U(a8).ax.k3.cg(0.45),b,b,b,b,b,b,b,b,12,b,b,b,b,b,!0,b,b,b,b,b,b,b,b),b,b),b,b))
+a5.push(A.du(A.N("ONEchat \xb7 v2026.11.25.4",b,b,b,A.cw(b,b,A.U(a8).ax.k3.cg(0.45),b,b,b,b,b,b,b,b,12,b,b,b,b,b,!0,b,b,b,b,b,b,b,b),b,b),b,b))
 return A.E1(a5,b,B.rd,b,!1)}}
 A.aFz.prototype={
 $0(){return this.a.r=this.b},
@@ -106787,7 +106787,7 @@ p=t.z
 n=B.e
 m=A
 s=3
-return A.j(o.jp("submit_report",A.S(["p_kind",b,"p_target",d,"p_room",c,"p_description",a,"p_app_version","2026.11.25.3"],t.N,p),p),$async$B1)
+return A.j(o.jp("submit_report",A.S(["p_kind",b,"p_target",d,"p_room",c,"p_description",a,"p_app_version","2026.11.25.4"],t.N,p),p),$async$B1)
 case 3:q=n.e8(m.eJ(f))
 s=1
 break
