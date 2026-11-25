@@ -156,3 +156,26 @@ footer {
   .hero-copy h1 { font-size: 31px; }
   .chatbox { min-height: 480px; }
 }
+
+/* ---------- early en cifras (panel temporal) ---------- */
+.stats-grid {
+  display: grid; gap: 14px; margin: 18px 0;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+}
+.stat {
+  background: var(--card); border-radius: var(--radius);
+  box-shadow: var(--shadow); padding: 20px 16px; text-align: center;
+}
+.stat-num { font-size: 30px; font-weight: 800; color: var(--ink); }
+.stat-label { color: var(--muted); font-size: 14px; margin-top: 4px; }
+.beta-box {
+  background: var(--card); border-radius: var(--radius);
+  box-shadow: var(--shadow); padding: 20px 22px;
+}
+.beta-box h3 { margin: 0 0 10px; }
+.beta-list {
+  margin: 0; padding-left: 20px; columns: 2; column-gap: 34px;
+  color: var(--ink);
+}
+.beta-list li { margin: 4px 0; break-inside: avoid; }
+@media (max-width: 640px) { .beta-list { columns: 1; } }

@@ -65,6 +65,73 @@
     <div class="grid" id="communityGrid"><div class="empty">Cargando comunidad…</div></div>
   </section>
 
+  <!-- EARLY EN CIFRAS (panel temporal: se retira al cerrar el Early) -->
+  <section class="block" id="earlyStats">
+    <h2>El acceso anticipado, en cifras</h2>
+    <p class="sub">ONEchat está en Early Access desde el 23 de noviembre de 2026.
+       Este panel es temporal: se retirará cuando comience la Beta.</p>
+    <!-- CIFRAS DEL EARLY: los conteos se actualizan a mano en este bloque. -->
+    <div class="stats-grid">
+      <div class="stat">
+        <div class="stat-num" id="earlyElapsed">…</div>
+        <div class="stat-label">llevamos en Early Access</div>
+      </div>
+      <div class="stat">
+        <div class="stat-num">8</div>
+        <div class="stat-label">errores encontrados</div>
+      </div>
+      <div class="stat">
+        <div class="stat-num">7</div>
+        <div class="stat-label">errores resueltos</div>
+      </div>
+      <div class="stat">
+        <div class="stat-num">17</div>
+        <div class="stat-label">mejoras llegan con la Beta</div>
+      </div>
+    </div>
+    <div class="beta-box">
+      <h3>Lo que traerá la Beta</h3>
+      <ul class="beta-list">
+        <li>Videos de YouTube dentro del chat</li>
+        <li>Botón «Mencionar» y autocompletado de nicks</li>
+        <li>Iconos de rango junto a tu nick</li>
+        <li>Copiar mensajes con toque largo</li>
+        <li>Sonidos y vibración cuando te mencionan</li>
+        <li>Avisos del sistema dentro de las salas</li>
+        <li>Cambiar tu nick desde el Perfil</li>
+        <li>Cerrar tus privados a desconocidos</li>
+        <li>Desactivar los susurros</li>
+        <li>Enlaces externos con silencio automático</li>
+        <li>Avisos de moderación en Status</li>
+        <li>Panel del dueño para roles globales</li>
+        <li>Destacados también por moderadores</li>
+        <li>La conversación sube con el teclado</li>
+        <li>Pantalla siempre encendida con el chat abierto</li>
+        <li>Corrección del color de tu nick en la Sala General</li>
+        <li>«Cine juntos» para Premium</li>
+      </ul>
+    </div>
+    <script>
+      // Contador del Early: desde la apertura (23-11-2026, 22:00 PT).
+      (function () {
+        var start = new Date('2026-11-23T22:00:00-08:00').getTime();
+        var el = document.getElementById('earlyElapsed');
+        function pad(n) { return (n < 10 ? '0' : '') + n; }
+        function tick() {
+          var diff = Math.max(0, Date.now() - start);
+          var d = Math.floor(diff / 86400000);
+          var h = Math.floor(diff % 86400000 / 3600000);
+          var m = Math.floor(diff % 3600000 / 60000);
+          var s = Math.floor(diff % 60000 / 1000);
+          el.textContent = d + (d === 1 ? ' día · ' : ' días · ') +
+            pad(h) + ':' + pad(m) + ':' + pad(s);
+        }
+        tick();
+        setInterval(tick, 1000);
+      })();
+    </script>
+  </section>
+
   <!-- PREMIUM -->
   <section class="block">
     <div class="premium-band">
