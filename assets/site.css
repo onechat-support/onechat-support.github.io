@@ -179,3 +179,24 @@ footer {
 }
 .beta-list li { margin: 4px 0; break-inside: avoid; }
 @media (max-width: 640px) { .beta-list { columns: 1; } }
+
+/* ---------- centinel ---------- */
+.centinel-box {
+  display: flex; align-items: center; gap: 18px; flex-wrap: wrap;
+  background: linear-gradient(120deg, #0e3b36, #0a5a50 55%, #0b6e63);
+  border-radius: var(--radius); box-shadow: var(--shadow);
+  padding: 22px 24px; color: #eafffb;
+}
+.centinel-shield {
+  width: 60px; height: 60px; border-radius: 50%;
+  background: rgba(255, 255, 255, .14); display: flex;
+  align-items: center; justify-content: center; flex: none;
+}
+.centinel-body { flex: 1; min-width: 240px; }
+.centinel-name { font-weight: 800; letter-spacing: 2px; font-size: 19px; }
+.centinel-name span { letter-spacing: 0; font-weight: 600; font-size: 14px; opacity: .85; }
+.centinel-text { margin: 6px 0 0; font-size: 15px; line-height: 1.45; opacity: .92; }
+.centinel-count { text-align: center; flex: none; padding: 0 8px; }
+.centinel-num { font-size: 42px; font-weight: 800; line-height: 1; }
+.centinel-label { font-size: 13px; opacity: .85; margin-top: 5px; }
+.centinel-note { color: var(--muted); font-size: 13px; margin-top: 10px; }
