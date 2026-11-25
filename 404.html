@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<title>ONEchat</title>
+<script>
+  // Páginas personales con dirección limpia: /u/Nickname
+  var m = location.pathname.match(/\/u\/([^\/]+)\/?$/);
+  if (m) {
+    location.replace("/u.html?nick=" + encodeURIComponent(decodeURIComponent(m[1])));
+  }
+</script>
+</head>
+<body style="font-family:system-ui,sans-serif;text-align:center;padding:60px 20px">
+  <h1>ONEchat</h1>
+  <p>Esta página no existe. <a href="/">Ir al inicio</a> · <a href="/chat/">Entrar al chat</a></p>
+</body>
+</html>

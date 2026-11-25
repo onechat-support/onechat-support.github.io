@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Perfil — ONEchat</title>
+<meta name="description" content="Página personal de un miembro de ONEchat: su bio y su Galería.">
+<link rel="icon" href="assets/logo_onechat.jpg">
+<link rel="stylesheet" href="assets/site.css">
+</head>
+<body>
+
+<header class="topbar">
+  <div class="topbar-in">
+    <a href="./"><img class="logo" src="assets/logo_onechat.jpg" alt="ONEchat"></a>
+    <nav class="main">
+      <a href="./">Inicio</a>
+      <a href="comunidad.html">Comunidad</a>
+      <a href="comunidad.html">Foro<span class="badge-soon">PRONTO</span></a>
+      <a href="chat/" class="cta">Entrar al chat</a>
+    </nav>
+  </div>
+</header>
+
+<main class="wrap">
+  <section class="block" id="content">
+    <div class="empty">Cargando página…</div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap" style="padding:0">
+    <p><strong>ONEchat</strong> — Las fotos de la Galería se suben desde el Perfil dentro de la app.</p>
+  </div>
+</footer>
+
+<script type="module">
+import { db, ensureSession, isOnline, initialOf, esc, lastSeenText } from "./assets/site.js";
+
+const AVATAR_COLORS = ["#4F8CFF", "#00C2A8", "#B388FF", "#FF8A65", "#7E57C2", "#26A69A", "#EC407A", "#5C6BC0"];
+const colorFor = n => { let h = 0; for (const c of (n || "")) h = (h * 31 + c.charCodeAt(0)) >>> 0; return AVATAR_COLORS[h % AVATAR_COLORS.length]; };
+
+const nick = new URLSearchParams(location.search).get("nick") || "";
+const box = document.getElementById("content");
+await ensureSession();
+
+const { data: rows } = await db.from("profiles")
+  .select("uid, nickname, nickname_color, country, bio, last_seen_at, is_guest")
+  .ilike("nickname", nick).limit(1);
+const p = rows?.[0];
+
+if (!p || p.is_guest) {
+  box.innerHTML = `<div class="empty"><h2>Esta página no existe</h2>
+    <p>Las páginas personales son solo para cuentas registradas de ONEchat.</p>
+    <p><a class="btn" href="comunidad.html">Ver la comunidad</a></p></div>`;
+} else {
+  document.title = `${p.nickname} — ONEchat`;
+  const { data: photos } = await db.from("gallery_photos")
+    .select("url, created_at").eq("uid", p.uid)
+    .order("created_at", { ascending: true });
+  const gallery = photos?.length
+    ? `<div class="gallery-grid">${photos.map(f =>
+        `<img src="${esc(f.url)}" alt="Foto de ${esc(p.nickname)}" loading="lazy">`).join("")}</div>`
+    : '<div class="empty">Su Galería aún no tiene fotos. ¡Pronto!</div>';
+  box.innerHTML = `
+    <div class="profile-head">
+      <div class="avatar" style="background:${colorFor(p.nickname)}">${esc(initialOf(p.nickname))}</div>
+      <div style="flex:1; min-width:220px">
+        <h2 style="margin:0; color:${esc(p.nickname_color || "#17233b")}">${esc(p.nickname)}</h2>
+        <div class="meta" style="color:var(--muted)">${esc(p.country || "")} ·
+          ${isOnline(p.last_seen_at) ? '<span class="online-tag">● En línea</span>' : "Última vez: " + esc(lastSeenText(p.last_seen_at))}</div>
+        ${p.bio ? `<p style="margin:8px 0 0">${esc(p.bio)}</p>` : ""}
+      </div>
+      <a class="btn" href="chat/">Enviar mensaje en el chat</a>
+    </div>
+    <h2 style="margin-top:30px">Su Galería</h2>
+    ${gallery}`;
+}
+</script>
+</body>
+</html>

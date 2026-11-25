@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Comunidad — ONEchat</title>
+<meta name="description" content="El directorio de la comunidad ONEchat: personas registradas, sus países y sus galerías.">
+<link rel="icon" href="assets/logo_onechat.jpg">
+<link rel="stylesheet" href="assets/site.css">
+</head>
+<body>
+
+<header class="topbar">
+  <div class="topbar-in">
+    <a href="./"><img class="logo" src="assets/logo_onechat.jpg" alt="ONEchat"></a>
+    <nav class="main">
+      <a href="./">Inicio</a>
+      <a href="comunidad.html">Comunidad</a>
+      <a href="comunidad.html">Foro<span class="badge-soon">PRONTO</span></a>
+      <a href="chat/" class="cta">Entrar al chat</a>
+    </nav>
+  </div>
+</header>
+
+<main class="wrap">
+  <section class="block">
+    <h2>Comunidad ONEchat</h2>
+    <p class="sub">Solo cuentas registradas. Toca una tarjeta para ver su página y su Galería.</p>
+    <div class="toolbar">
+      <input id="q" type="search" placeholder="Buscar por nickname…">
+      <select id="country"><option value="">Todos los países</option></select>
+    </div>
+    <div class="grid" id="grid"><div class="empty">Cargando comunidad…</div></div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap" style="padding:0">
+    <p><strong>ONEchat</strong> — ¿No quieres aparecer aquí? Apaga «Aparecer en la Comunidad» en tu Perfil dentro de la app.</p>
+  </div>
+</footer>
+
+<script type="module">
+import { db, ensureSession, isOnline, initialOf, esc, lastSeenText } from "./assets/site.js";
+
+const AVATAR_COLORS = ["#4F8CFF", "#00C2A8", "#B388FF", "#FF8A65", "#7E57C2", "#26A69A", "#EC407A", "#5C6BC0"];
+const colorFor = n => { let h = 0; for (const c of (n || "")) h = (h * 31 + c.charCodeAt(0)) >>> 0; return AVATAR_COLORS[h % AVATAR_COLORS.length]; };
+
+await ensureSession();
+const { data: people } = await db.from("profiles")
+  .select("nickname, nickname_color, country, bio, last_seen_at, created_at")
+  .eq("is_guest", false).eq("show_in_directory", true)
+  .order("created_at", { ascending: false }).limit(300);
+const all = people ?? [];
+
+const countries = [...new Set(all.map(p => p.country).filter(Boolean))].sort();
+const sel = document.getElementById("country");
+sel.innerHTML += countries.map(c => `<option>${esc(c)}</option>`).join("");
+
+function render() {
+  const q = document.getElementById("q").value.trim().toLowerCase();
+  const ctry = sel.value;
+  const list = all.filter(p =>
+    (!q || p.nickname.toLowerCase().includes(q)) &&
+    (!ctry || p.country === ctry));
+  const sorted = [...list].sort((a, b) =>
+    (isOnline(b.last_seen_at) - isOnline(a.last_seen_at)) ||
+    (new Date(b.created_at) - new Date(a.created_at)));
+  document.getElementById("grid").innerHTML = sorted.length ? sorted.map(p => `
+    <a class="ucard" href="u/${encodeURIComponent(p.nickname)}">
+      <div class="avatar" style="background:${colorFor(p.nickname)}">${esc(initialOf(p.nickname))}</div>
+      <div class="nick" style="color:${esc(p.nickname_color || "#17233b")}">${esc(p.nickname)}</div>
+      <div class="meta">${esc(p.country || "")}</div>
+      ${isOnline(p.last_seen_at)
+        ? '<div class="online-tag">● En línea</div>'
+        : `<div class="meta">Última vez: ${esc(lastSeenText(p.last_seen_at))}</div>`}
+      ${p.bio ? `<div class="bio">${esc(p.bio)}</div>` : ""}
+    </a>`).join("")
+  : '<div class="empty">Nadie coincide con ese filtro todavía.</div>';
+}
+document.getElementById("q").addEventListener("input", render);
+sel.addEventListener("change", render);
+render();
+</script>
+</body>
+</html>

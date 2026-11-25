@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>ONEchat — Salas para conversar, como las de antes</title>
+<meta name="description" content="ONEchat: salas de chat por países y temas, mensajes privados, juegos y comunidad. Entra, elige tu nickname y a chatear.">
+<link rel="icon" href="assets/logo_onechat.jpg">
+<link rel="stylesheet" href="assets/site.css">
+</head>
+<body>
+
+<header class="topbar">
+  <div class="topbar-in">
+    <a href="./"><img class="logo" src="assets/logo_onechat.jpg" alt="ONEchat"></a>
+    <nav class="main">
+      <a href="./">Inicio</a>
+      <a href="comunidad.html">Comunidad</a>
+      <a href="comunidad.html">Foro<span class="badge-soon">PRONTO</span></a>
+      <a href="chat/" class="cta">Entrar al chat</a>
+    </nav>
+  </div>
+</header>
+
+<main class="wrap">
+
+  <!-- HÉROE: base luminosa (A) + chat oscuro en vivo (C) -->
+  <div class="hero">
+    <div class="hero-copy">
+      <h1>Salas para conversar,<br><span class="hl">como las de antes.</span></h1>
+      <p>ONEchat trae de vuelta el chat por salas: países, temas,
+         susurros, privados y juegos — con la calidez de siempre
+         y la seguridad de hoy. Sin registros eternos: elige tu
+         nickname y entra.</p>
+      <p>
+        <a class="btn" href="chat/">Entrar al chat</a>
+        <a class="btn ghost" href="comunidad.html">Conocer la comunidad</a>
+      </p>
+      <div class="presence">
+        <span><span class="dot"></span> <strong id="onlineCount">…</strong> en línea ahora</span>
+        <span>·</span><span><strong>30</strong> salas abiertas</span>
+        <span>·</span><span>Acceso anticipado · Fase Alfa</span>
+      </div>
+    </div>
+    <div class="chatbox">
+      <div class="chatbox-head">
+        <span>💬 Sala General — ONEchat en vivo</span>
+        <span class="live">● EN VIVO</span>
+      </div>
+      <iframe src="chat/" title="ONEchat — chat en vivo" loading="lazy"></iframe>
+    </div>
+  </div>
+
+  <!-- SALAS -->
+  <section class="block">
+    <h2>Salas para todos</h2>
+    <p class="sub">Una sala por país latino, Norteamérica, Europa y salas temáticas. Toca una y entra directo.</p>
+    <div class="chips" id="roomChips"><span class="empty">Cargando salas…</span></div>
+  </section>
+
+  <!-- COMUNIDAD -->
+  <section class="block">
+    <h2>La comunidad</h2>
+    <p class="sub">Personas reales, con su página y su galería. <a href="comunidad.html">Ver el directorio completo →</a></p>
+    <div class="grid" id="communityGrid"><div class="empty">Cargando comunidad…</div></div>
+  </section>
+
+  <!-- PREMIUM -->
+  <section class="block">
+    <div class="premium-band">
+      <div style="flex:1; min-width:260px">
+        <h2>ONEchat Premium — muy pronto</h2>
+        <p>Fotos ilimitadas en tu Galería, «Cine juntos» para ver
+           películas en simultáneo con quien quieras, insignia
+           Premium y más. Estamos en acceso anticipado: entra al
+           chat y vive el nacimiento de la comunidad.</p>
+      </div>
+      <a class="btn" href="chat/" style="background:#fff; color:#5a4bd1">Quiero entrar</a>
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  <div class="wrap" style="padding:0">
+    <p><strong>ONEchat</strong> — Salas para conversar, como las de antes.<br>
+    Por seguridad y moderación, registramos la dirección IP de tu conexión cuando usas el chat.
+    Si necesitas ayuda, escribe a <a href="mailto:onechat.support@gmail.com">onechat.support@gmail.com</a>.</p>
+  </div>
+</footer>
+
+<script type="module">
+import { db, ensureSession, isOnline, initialOf, esc, lastSeenText } from "./assets/site.js";
+
+const AVATAR_COLORS = ["#4F8CFF", "#00C2A8", "#B388FF", "#FF8A65", "#7E57C2", "#26A69A", "#EC407A", "#5C6BC0"];
+function colorFor(nick) {
+  let h = 0; for (const c of (nick || "")) h = (h * 31 + c.charCodeAt(0)) >>> 0;
+  return AVATAR_COLORS[h % AVATAR_COLORS.length];
+}
+
+await ensureSession();
+
+// Presencia: en línea = actividad en los últimos 6 minutos.
+{
+  const since = new Date(Date.now() - 6 * 60000).toISOString();
+  const { count } = await db.from("profiles")
+    .select("uid", { count: "exact", head: true })
+    .gte("last_seen_at", since);
+  document.getElementById("onlineCount").textContent = count ?? 0;
+}
+
+// Salas: chips que enlazan al chat.
+{
+  const { data: rooms } = await db.from("rooms")
+    .select("name, kind").order("name");
+  const box = document.getElementById("roomChips");
+  if (rooms?.length) {
+    box.innerHTML = rooms.map(r =>
+      `<a class="chip" href="chat/">${esc(r.name)}</a>`).join("");
+  } else {
+    box.innerHTML = '<span class="empty">Las salas están en el chat →</span>';
+  }
+}
+
+// Comunidad: registrados, en línea primero, luego recientes.
+{
+  const { data: people } = await db.from("profiles")
+    .select("nickname, nickname_color, country, bio, last_seen_at, created_at")
+    .eq("is_guest", false).eq("show_in_directory", true)
+    .order("created_at", { ascending: false }).limit(60);
+  const grid = document.getElementById("communityGrid");
+  if (people?.length) {
+    const sorted = [...people].sort((a, b) =>
+      (isOnline(b.last_seen_at) - isOnline(a.last_seen_at)) ||
+      (new Date(b.created_at) - new Date(a.created_at)));
+    grid.innerHTML = sorted.slice(0, 8).map(p => `
+      <a class="ucard" href="u/${encodeURIComponent(p.nickname)}">
+        <div class="avatar" style="background:${colorFor(p.nickname)}">${esc(initialOf(p.nickname))}</div>
+        <div class="nick" style="color:${esc(p.nickname_color || "#17233b")}">${esc(p.nickname)}</div>
+        <div class="meta">${esc(p.country || "")}</div>
+        ${isOnline(p.last_seen_at)
+          ? '<div class="online-tag">● En línea</div>'
+          : `<div class="meta">Última vez: ${esc(lastSeenText(p.last_seen_at))}</div>`}
+        ${p.bio ? `<div class="bio">${esc(p.bio)}</div>` : ""}
+      </a>`).join("");
+  } else {
+    grid.innerHTML = '<div class="empty">La comunidad está naciendo. ¡Sé de los primeros!</div>';
+  }
+}
+</script>
+</body>
+</html>
