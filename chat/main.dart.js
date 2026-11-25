@@ -104436,7 +104436,7 @@ case 1:return A.o(q,r)}})
 return A.p($async$q1,r)},
 J(a){var s,r,q,p,o,n,m,l=this,k=null,j=t.p,i=A.b([l.ajp(),new A.KI(l.gky(),k),new A.C3(l.gky(),l.as),new A.Lp(new A.aCr(l),l.gky(),l.Q),new A.K2(l.gky(),new A.aCs(l),k)],j)
 if(l.d===0)s=k
-else{s=A.OT(A.hL(7),A.aPP("assets/logo_onechat.jpg",B.Gj,32,"ONEchat"),B.bO)
+else{s=A.OT(A.hL(7),A.aPP("assets/logo_letras.png",B.Gj,32,"ONEchat"),B.bO)
 r=A.b([],j)
 if(l.gXP()&&l.y!=null){q=l.y
 q.toString
@@ -105001,7 +105001,7 @@ a5.push(A.eS(B.t5,A.N(A.v("profile.blocked",B.f),b,b,b,b,b,b),c.gau0()))
 a5.push(B.bK)
 a5.push(A.eS(B.MN,A.N(A.v("profile.signOut",B.f),b,b,b,b,b,b),c.gau9()))
 a5.push(B.kg)
-a5.push(A.du(A.N("ONEchat \xb7 v2026.11.25.2",b,b,b,A.cw(b,b,A.U(a8).ax.k3.cg(0.45),b,b,b,b,b,b,b,b,12,b,b,b,b,b,!0,b,b,b,b,b,b,b,b),b,b),b,b))
+a5.push(A.du(A.N("ONEchat \xb7 v2026.11.25.3",b,b,b,A.cw(b,b,A.U(a8).ax.k3.cg(0.45),b,b,b,b,b,b,b,b,12,b,b,b,b,b,!0,b,b,b,b,b,b,b,b),b,b),b,b))
 return A.E1(a5,b,B.rd,b,!1)}}
 A.aFz.prototype={
 $0(){return this.a.r=this.b},
@@ -105665,7 +105665,7 @@ if(r==null)return a
 s=new A.apB()
 return A.h(s.$1(A.tF(r)))+"-"+A.h(s.$1(A.tG(r)))+"-"+A.na(r)+" "+A.h(s.$1(A.xA(r)))+":"+A.h(s.$1(A.xB(r)))},
 J(a){var s,r,q,p,o=null,n=this.c,m=J.Z(n),l=J.c(m.h(n,"permanent"),!0),k=A.ah(m.h(n,"expires_at"))
-n=A.OT(A.hL(18),A.aPP("assets/logo_onechat.jpg",B.pI,o,"ONEchat"),B.bO)
+n=A.OT(A.hL(18),A.aPP("assets/logo_onechat.png",B.pI,o,"ONEchat"),B.bO)
 m=A.N(A.v("revoked.title",B.f),o,o,o,B.a0G,B.ay,o)
 if(l||k==null)s=A.v("revoked.bodyPermanent",B.f)
 else{s=t.N
@@ -106787,7 +106787,7 @@ p=t.z
 n=B.e
 m=A
 s=3
-return A.j(o.jp("submit_report",A.S(["p_kind",b,"p_target",d,"p_room",c,"p_description",a,"p_app_version","2026.11.25.2"],t.N,p),p),$async$B1)
+return A.j(o.jp("submit_report",A.S(["p_kind",b,"p_target",d,"p_room",c,"p_description",a,"p_app_version","2026.11.25.3"],t.N,p),p),$async$B1)
 case 3:q=n.e8(m.eJ(f))
 s=1
 break
@@ -107902,7 +107902,7 @@ o=$.o5()
 n=J.c(o.a,p)?B.am:B.u
 o=J.c(o.a,p)?B.bn:l
 j.push(A.hw(A.N(p.toUpperCase(),l,l,l,new A.y(!0,o,l,l,l,l,l,n,l,l,l,l,l,l,l,l,l,l,l,l,l,l,l,l,l,l),l,l),l,l,new A.aLV(m,p),l,l))}j=A.eE(j,B.Z,B.h8,B.a6,0)
-s=A.OT(A.hL(18),A.aPP("assets/logo_onechat.jpg",B.pI,l,"ONEchat"),B.bO)
+s=A.OT(A.hL(18),A.aPP("assets/logo_onechat.png",B.pI,l,"ONEchat"),B.bO)
 r=A.v("welcome.tagline",B.f)
 o=A.U(a).ax
 n=o.rx
