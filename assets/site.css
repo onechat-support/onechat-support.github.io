@@ -187,10 +187,9 @@ footer {
   border-radius: var(--radius); box-shadow: var(--shadow);
   padding: 22px 24px; color: #eafffb;
 }
-.centinel-shield {
-  width: 60px; height: 60px; border-radius: 50%;
-  background: rgba(255, 255, 255, .14); display: flex;
-  align-items: center; justify-content: center; flex: none;
+.centinel-img {
+  width: 62px; height: auto; flex: none;
+  filter: drop-shadow(0 3px 8px rgba(0, 0, 0, .35));
 }
 .centinel-body { flex: 1; min-width: 240px; }
 .centinel-name { font-weight: 800; letter-spacing: 2px; font-size: 19px; }
