@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Eliminar tu cuenta — ONEchat</title>
+<meta name="description" content="Elimina tu cuenta de ONEchat y todos tus datos: perfil, mensajes, fotos de la Galería y conversaciones. Desde la app o desde esta página.">
+<meta name="robots" content="noindex, follow">
+<link rel="canonical" href="https://getonechat.com/eliminar-cuenta.html">
+<link rel="icon" href="assets/logo_onechat.jpg">
+<link rel="stylesheet" href="assets/site.css">
+<style>
+  .del-form { max-width: 440px; margin: 18px auto 0; display: grid; gap: 12px; }
+  .del-form label { font-weight: 600; font-size: 14px; display: grid; gap: 6px; }
+  .del-form input[type="text"], .del-form input[type="password"] {
+    padding: 11px 13px; border: 1px solid var(--line, #d8dce6); border-radius: 10px;
+    font-size: 16px; background: #fff; color: #17233b;
+  }
+  .del-check { display: flex; gap: 9px; align-items: flex-start; font-size: 14px; font-weight: 400; }
+  .del-btn {
+    padding: 13px; border: 0; border-radius: 12px; font-size: 16px; font-weight: 700;
+    background: #d32f2f; color: #fff; cursor: pointer;
+  }
+  .del-btn:disabled { opacity: .45; cursor: not-allowed; }
+  .del-msg { min-height: 22px; font-size: 15px; text-align: center; }
+  .del-msg.ok { color: #0a7a5c; font-weight: 700; }
+  .del-msg.err { color: #c62828; font-weight: 600; }
+</style>
+</head>
+<body>
+
+<header class="topbar">
+  <div class="topbar-in">
+    <a href="./"><img class="logo" src="assets/logo_letras.png" alt="ONEchat"></a>
+    <nav class="main">
+      <a href="./">Inicio</a>
+      <a href="comunidad.html">Comunidad</a>
+      <a href="comunidad.html">Foro<span class="badge-soon">PRONTO</span></a>
+      <a href="chat/" class="cta">Entrar al chat</a>
+    </nav>
+  </div>
+</header>
+
+<main class="wrap">
+  <section class="block">
+    <h2>Eliminar tu cuenta de ONEchat</h2>
+    <p class="sub">Puedes eliminar tu cuenta de dos maneras:</p>
+    <p><strong>Desde la app:</strong> entra a tu pestaña <strong>Perfil</strong> y toca
+    «Eliminar mi cuenta» al final de la página.</p>
+    <p><strong>Desde esta página:</strong> escribe tu nickname y tu contraseña aquí abajo.
+    Funciona solo para cuentas registradas (las cuentas de invitado se eliminan desde la app).</p>
+    <p>Al eliminar tu cuenta se borra <strong>para siempre</strong>: tu perfil, tus mensajes
+    en las salas, tus mensajes privados y susurros, tus fotos de la Galería y tus datos de
+    acceso. Tu nickname quedará libre para que otra persona lo use. Esta acción
+    <strong>no se puede deshacer</strong>.</p>
+
+    <form class="del-form" id="delForm">
+      <label>Tu nickname
+        <input type="text" id="delNick" autocomplete="username" required maxlength="24">
+      </label>
+      <label>Tu contraseña
+        <input type="password" id="delPass" autocomplete="current-password" required>
+      </label>
+      <label class="del-check">
+        <input type="checkbox" id="delSure">
+        <span>Entiendo que mi cuenta y mis datos se borrarán para siempre y que no se puede deshacer.</span>
+      </label>
+      <button class="del-btn" id="delBtn" type="submit" disabled>Eliminar mi cuenta para siempre</button>
+      <p class="del-msg" id="delMsg"></p>
+    </form>
+
+    <p style="margin-top:22px">¿Problemas para eliminar tu cuenta? Escríbenos a
+    <a href="mailto:onechat.support@gmail.com">onechat.support@gmail.com</a> y la eliminamos por ti.</p>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap" style="padding:0">
+    <p><strong>ONEchat</strong> — Salas para conversar, como las de antes.<br>
+    Por seguridad y moderación, registramos la dirección IP de tu conexión cuando usas el chat.
+    Si necesitas ayuda, escribe a <a href="mailto:onechat.support@gmail.com">onechat.support@gmail.com</a>.</p>
+  </div>
+</footer>
+
+<script>
+  const sure = document.getElementById("delSure");
+  const btn = document.getElementById("delBtn");
+  const msg = document.getElementById("delMsg");
+  sure.addEventListener("change", () => { btn.disabled = !sure.checked; });
+  document.getElementById("delForm").addEventListener("submit", async (e) => {
+    e.preventDefault();
+    const nickname = document.getElementById("delNick").value.trim();
+    const password = document.getElementById("delPass").value;
+    if (!nickname || !password) return;
+    if (!confirm("¿Seguro? Tu cuenta de ONEchat se eliminará para siempre.")) return;
+    btn.disabled = true;
+    msg.className = "del-msg";
+    msg.textContent = "Eliminando…";
+    try {
+      const res = await fetch("https://jsdyoqmgdkqlkucebjmt.supabase.co/functions/v1/delete-account", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "apikey": "sb_publishable_FE28e094cucvLYdDFlnxKQ_dxlKjXO-",
+          "Authorization": "Bearer sb_publishable_FE28e094cucvLYdDFlnxKQ_dxlKjXO-"
+        },
+        body: JSON.stringify({ nickname, password })
+      });
+      const data = await res.json().catch(() => ({}));
+      if (res.ok && data.ok) {
+        msg.className = "del-msg ok";
+        msg.textContent = "Tu cuenta fue eliminada. Gracias por haber estado en ONEchat.";
+        document.getElementById("delForm").reset();
+      } else if (data.error === "invalid_credentials") {
+        msg.className = "del-msg err";
+        msg.textContent = "Nickname o contraseña incorrectos. Revisa los datos e inténtalo de nuevo.";
+        btn.disabled = false;
+      } else {
+        msg.className = "del-msg err";
+        msg.textContent = "No se pudo eliminar la cuenta. Inténtalo de nuevo o escríbenos a onechat.support@gmail.com.";
+        btn.disabled = false;
+      }
+    } catch (err) {
+      msg.className = "del-msg err";
+      msg.textContent = "No se pudo contactar el servidor. Inténtalo de nuevo.";
+      btn.disabled = false;
+    }
+  });
+</script>
+
+</body>
+</html>
