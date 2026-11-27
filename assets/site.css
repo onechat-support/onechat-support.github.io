@@ -199,3 +199,16 @@ footer {
 .centinel-num { font-size: 42px; font-weight: 800; line-height: 1; }
 .centinel-label { font-size: 13px; opacity: .85; margin-top: 5px; }
 .centinel-note { color: var(--muted); font-size: 13px; margin-top: 10px; }
+
+/* Video de novedades (autoplay al bajar, sin controles) */
+.video-novedades { position: relative; max-width: 880px; margin: 18px auto 0; }
+.video-novedades video {
+  width: 100%; display: block; border-radius: 16px; background: #000;
+  box-shadow: 0 10px 34px rgba(0, 0, 0, .35);
+}
+.video-sound {
+  position: absolute; left: 50%; bottom: 18px; transform: translateX(-50%);
+  background: #00C2A8; color: #052e28; border: 0; font-weight: 700;
+  font-size: 16px; padding: 12px 22px; border-radius: 999px; cursor: pointer;
+  box-shadow: 0 6px 24px rgba(0, 0, 0, .45);
+}

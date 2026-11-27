@@ -162,6 +162,60 @@
     </script>
   </section>
 
+  <!-- VIDEO: TODO LO NUEVO -->
+  <section class="block">
+    <h2>Todo lo nuevo, en un video</h2>
+    <p class="sub">Las funciones integradas en el Early, explicadas en un minuto.</p>
+    <div class="video-novedades">
+      <video id="novedadesVideo" playsinline muted preload="metadata"
+             src="assets/video-novedades.mp4"></video>
+      <button id="novedadesSound" class="video-sound" type="button" hidden>
+        Toca para activar el sonido
+      </button>
+    </div>
+    <script>
+      (function () {
+        var v = document.getElementById('novedadesVideo');
+        var btn = document.getElementById('novedadesSound');
+        if (!v) return;
+        var started = false;
+        function start() {
+          // Primero se intenta CON sonido. Si el navegador lo
+          // bloquea (exige un toque previo en la página), parte
+          // en silencio y se muestra el botón para activarlo.
+          v.muted = false;
+          var p = v.play();
+          if (p && p.catch) {
+            p.catch(function () {
+              v.muted = true;
+              v.play().catch(function () {});
+              btn.hidden = false;
+            });
+          }
+        }
+        var io = new IntersectionObserver(function (entries) {
+          entries.forEach(function (e) {
+            if (e.isIntersecting && !started) {
+              started = true;
+              start();
+              io.disconnect();
+            }
+          });
+        }, { threshold: 0.35 });
+        io.observe(v);
+        function soundOn() {
+          v.muted = false;
+          v.play().catch(function () {});
+          btn.hidden = true;
+        }
+        btn.addEventListener('click', soundOn);
+        v.addEventListener('click', function () {
+          if (v.muted) soundOn();
+        });
+      })();
+    </script>
+  </section>
+
   <!-- CENTINEL -->
   <section class="block">
     <div class="centinel-box">
