@@ -212,3 +212,6 @@ footer {
   font-size: 16px; padding: 12px 22px; border-radius: 999px; cursor: pointer;
   box-shadow: 0 6px 24px rgba(0, 0, 0, .45);
 }
+
+/* Preguntas frecuentes */
+section.block h3 { font-size: 19px; margin: 20px 0 4px; }

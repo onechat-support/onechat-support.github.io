@@ -7,6 +7,7 @@
 <meta name="description" content="Chatea gratis en ONEchat: salas de chat por países de Latinoamérica y España, chat en línea sin descargar nada y sin registro complicado — solo tu nickname. Mensajes privados, susurros, juegos y una comunidad para conocer gente nueva, hacer amigos y conversar como en los chats de antes.">
 <meta name="keywords" content="chatear, chatea, salas de chat, chat por salas, chat gratis, chat en línea, chat en vivo, chat latino, chat sin registro, chat rooms, chatting rooms, conocer gente, hacer amigos, conversar en línea, ONEchat">
 <meta name="robots" content="index, follow">
+<meta name="theme-color" content="#121212">
 <link rel="canonical" href="https://getonechat.com/">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="ONEchat">
@@ -32,6 +33,44 @@
   "description": "Salas de chat por países y temas para chatear gratis en línea, conocer gente nueva y hacer amigos. Chat sin registro con nickname, mensajes privados, susurros y juegos.",
   "keywords": "chatear, salas de chat, chat por salas, chat gratis, chat en línea, chat latino, conocer gente, chat rooms",
   "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" }
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "¿Qué es ONEchat?",
+      "acceptedAnswer": { "@type": "Answer", "text": "ONEchat es un chat por salas, como los de antes: salas por países y por temas donde conversas en vivo con gente conectada al mismo tiempo. Tiene mensajes privados, susurros, juegos y páginas personales con Galería de fotos." }
+    },
+    {
+      "@type": "Question",
+      "name": "¿Chatear en ONEchat es gratis?",
+      "acceptedAnswer": { "@type": "Answer", "text": "Sí. Entrar y chatear en ONEchat es gratis. Más adelante existirá ONEchat Premium con extras como fotos ilimitadas en la Galería y «Cine juntos», pero las salas y la conversación son y serán gratuitas." }
+    },
+    {
+      "@type": "Question",
+      "name": "¿Necesito registrarme para entrar al chat?",
+      "acceptedAnswer": { "@type": "Answer", "text": "No. Puedes entrar como invitado solo con un nickname, sin correo y sin contraseña. Si quieres, puedes registrarte con tu correo para guardar tu nickname y tu perfil." }
+    },
+    {
+      "@type": "Question",
+      "name": "¿ONEchat funciona en el celular?",
+      "acceptedAnswer": { "@type": "Answer", "text": "Sí. ONEchat funciona directo en el navegador de tu celular o computador, sin descargar ni instalar nada." }
+    },
+    {
+      "@type": "Question",
+      "name": "¿Qué salas de chat hay?",
+      "acceptedAnswer": { "@type": "Answer", "text": "Hay una sala General, salas por país (Chile, México, Argentina, Colombia, Perú, España, Estados Unidos y más), una sala de Europa y salas temáticas como Amistad, Encuentros, Debates y Pasiones. Al entrar, se abre sola la sala de tu país." }
+    },
+    {
+      "@type": "Question",
+      "name": "¿ONEchat es un chat seguro?",
+      "acceptedAnswer": { "@type": "Answer", "text": "ONEchat tiene moderación con equipo humano, reportes con evidencia automática, bloqueo de enlaces externos y a Centinel, un sistema que vigila las conversaciones de riesgo las 24 horas. La edad mínima es de 18 años." }
+    }
+  ]
 }
 </script>
 <link rel="icon" href="assets/logo_onechat.jpg">
@@ -167,7 +206,8 @@
     <h2>Todo lo nuevo, en un video</h2>
     <p class="sub">Las funciones integradas en el Early, explicadas en un minuto.</p>
     <div class="video-novedades">
-      <video id="novedadesVideo" playsinline muted preload="metadata"
+      <video id="novedadesVideo" playsinline webkit-playsinline muted
+             preload="metadata" width="1280" height="720"
              src="assets/video-novedades.mp4"></video>
       <button id="novedadesSound" class="video-sound" type="button" hidden>
         Toca para activar el sonido
@@ -267,6 +307,34 @@
       tiene su página con su Galería. Nada de catálogos fríos de fotos:
       aquí primero se conversa.
     </p>
+  </section>
+
+  <!-- PREGUNTAS FRECUENTES -->
+  <section class="block">
+    <h2>Preguntas frecuentes</h2>
+    <h3>¿Qué es ONEchat?</h3>
+    <p class="sub">ONEchat es un chat por salas, como los de antes: salas por países y por
+       temas donde conversas en vivo con gente conectada al mismo tiempo. Tiene mensajes
+       privados, susurros, juegos y páginas personales con Galería de fotos.</p>
+    <h3>¿Chatear en ONEchat es gratis?</h3>
+    <p class="sub">Sí. Entrar y chatear en ONEchat es gratis. Más adelante existirá ONEchat
+       Premium con extras como fotos ilimitadas en la Galería y «Cine juntos», pero las
+       salas y la conversación son y serán gratuitas.</p>
+    <h3>¿Necesito registrarme para entrar al chat?</h3>
+    <p class="sub">No. Puedes entrar como invitado solo con un nickname, sin correo y sin
+       contraseña. Si quieres, puedes registrarte con tu correo para guardar tu nickname
+       y tu perfil.</p>
+    <h3>¿ONEchat funciona en el celular?</h3>
+    <p class="sub">Sí. ONEchat funciona directo en el navegador de tu celular o computador,
+       sin descargar ni instalar nada.</p>
+    <h3>¿Qué salas de chat hay?</h3>
+    <p class="sub">Hay una sala General, salas por país (Chile, México, Argentina, Colombia,
+       Perú, España, Estados Unidos y más), una sala de Europa y salas temáticas como
+       Amistad, Encuentros, Debates y Pasiones. Al entrar, se abre sola la sala de tu país.</p>
+    <h3>¿ONEchat es un chat seguro?</h3>
+    <p class="sub">ONEchat tiene moderación con equipo humano, reportes con evidencia
+       automática, bloqueo de enlaces externos y a Centinel, un sistema que vigila las
+       conversaciones de riesgo las 24 horas. La edad mínima es de 18 años.</p>
   </section>
 
 </main>
