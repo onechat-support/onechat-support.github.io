@@ -200,11 +200,20 @@ footer {
 .centinel-label { font-size: 13px; opacity: .85; margin-top: 5px; }
 .centinel-note { color: var(--muted); font-size: 13px; margin-top: 10px; }
 
-/* Video de novedades (autoplay al bajar, sin controles) */
-.video-novedades { position: relative; max-width: 880px; margin: 18px auto 0; }
+/* Video de novedades (autoplay al bajar, sin controles).
+   La caja reserva su espacio con aspect-ratio ANTES de que el
+   video cargue: la página no salta ni se desborda en móvil. */
+.video-novedades {
+  position: relative; max-width: 880px; margin: 18px auto 0;
+  aspect-ratio: 16 / 9; border-radius: 16px; overflow: hidden;
+  background: #000; box-shadow: 0 10px 34px rgba(0, 0, 0, .35);
+}
 .video-novedades video {
-  width: 100%; display: block; border-radius: 16px; background: #000;
-  box-shadow: 0 10px 34px rgba(0, 0, 0, .35);
+  width: 100%; height: 100%; display: block; object-fit: contain;
+}
+@media (max-width: 640px) {
+  .video-novedades { border-radius: 12px; }
+  .video-sound { font-size: 14px; padding: 10px 16px; bottom: 12px; }
 }
 .video-sound {
   position: absolute; left: 50%; bottom: 18px; transform: translateX(-50%);
