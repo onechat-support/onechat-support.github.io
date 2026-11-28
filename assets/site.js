@@ -68,3 +68,22 @@ try {
     }),
   }).catch(() => {});
 } catch (e) { /* El contador jamás debe romper la página. */ }
+
+// Botón de cuenta del menú (2026-11-28): si en este navegador
+// hay una sesión REAL de ONEchat (no la anónima de lectura),
+// el enlace «Iniciar sesión» muestra el nickname, para que se
+// note que la cuenta está abierta también en la web.
+(async () => {
+  try {
+    const links = document.querySelectorAll("[data-account-link]");
+    if (!links.length) return;
+    const { data } = await db.auth.getSession();
+    const user = data.session?.user;
+    if (!user || user.is_anonymous) return;
+    const { data: prof } = await db.from("profiles")
+      .select("nickname").eq("uid", user.id).maybeSingle();
+    const label = prof?.nickname
+      ? `Mi cuenta · ${prof.nickname}` : "Mi cuenta";
+    links.forEach((a) => { a.textContent = label; });
+  } catch (e) { /* El menú funciona igual sin el nombre. */ }
+})();
