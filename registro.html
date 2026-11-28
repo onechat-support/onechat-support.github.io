@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Crear tu cuenta — ONEchat</title>
+<meta name="description" content="Regístrate gratis en ONEchat: crea tu cuenta con tu nickname y entra a chatear en las salas por países y temas, con privados, susurros y Cine juntos.">
+<link rel="canonical" href="https://getonechat.com/registro.html">
+<meta property="og:title" content="Crear tu cuenta — ONEchat">
+<meta property="og:description" content="Regístrate gratis y entra a chatear: salas por países, privados, zumbidos y Cine juntos. Como en los chats de antes.">
+<meta property="og:url" content="https://getonechat.com/registro.html">
+<meta property="og:type" content="website">
+<link rel="icon" href="assets/logo_onechat.jpg">
+<link rel="stylesheet" href="assets/site.css">
+<style>
+  .reg-form { max-width: 440px; margin: 18px auto 0; display: grid; gap: 12px; }
+  .reg-form label { font-weight: 600; font-size: 14px; display: grid; gap: 6px; }
+  .reg-form input[type="text"], .reg-form input[type="email"],
+  .reg-form input[type="password"] {
+    padding: 11px 13px; border: 1px solid var(--line, #d8dce6); border-radius: 10px;
+    font-size: 16px; background: #fff; color: #17233b;
+  }
+  .reg-btn {
+    padding: 13px; border: 0; border-radius: 12px; font-size: 16px; font-weight: 700;
+    background: #00c2a8; color: #06281f; cursor: pointer;
+  }
+  .reg-btn:disabled { opacity: .45; cursor: not-allowed; }
+  .reg-msg { min-height: 22px; font-size: 15px; text-align: center; }
+  .reg-msg.ok { color: #0a7a5c; font-weight: 700; }
+  .reg-msg.err { color: #c62828; font-weight: 600; }
+  .reg-note { font-size: 13px; color: #5b6a86; text-align: center; }
+</style>
+</head>
+<body>
+
+<header class="topbar">
+  <div class="topbar-in">
+    <a href="./"><img class="logo" src="assets/logo_letras.png" alt="ONEchat"></a>
+    <nav class="main">
+      <a href="./">Inicio</a>
+      <a href="comunidad.html">Comunidad</a>
+      <a href="registro.html">Registrarse</a>
+      <a href="chat/" class="cta">Entrar al chat</a>
+    </nav>
+  </div>
+</header>
+
+<main class="wrap">
+  <section class="block">
+    <h2>Crea tu cuenta gratis</h2>
+    <p class="sub">Con tu cuenta registrada tu nickname es solo tuyo: nadie más puede
+    usarlo. Podrás entrar al chat desde cualquier dispositivo con tu nickname
+    o tu correo y tu contraseña.</p>
+
+    <form class="reg-form" id="regForm">
+      <label>Tu nickname
+        <input type="text" id="regNick" autocomplete="username" required
+               minlength="3" maxlength="20" placeholder="Ej.: Luna_2026">
+      </label>
+      <label>Tu correo electrónico
+        <input type="email" id="regEmail" autocomplete="email" required
+               placeholder="tucorreo@ejemplo.com">
+      </label>
+      <label>Contraseña
+        <input type="password" id="regPass" autocomplete="new-password" required
+               minlength="6" placeholder="Mínimo 6 caracteres">
+      </label>
+      <label>Repite la contraseña
+        <input type="password" id="regPass2" autocomplete="new-password" required
+               minlength="6">
+      </label>
+      <button class="reg-btn" id="regBtn" type="submit">Crear mi cuenta</button>
+      <p class="reg-msg" id="regMsg"></p>
+      <p class="reg-note">Te enviaremos un correo de confirmación. Al confirmarlo,
+      entra al <a href="chat/">chat</a> con tu nickname o tu correo y tu contraseña,
+      y tu nickname quedará reservado para ti. Si el nickname ya estuviera tomado,
+      el chat te pedirá elegir otro al entrar.<br><br>
+      ¿Ya tienes cuenta? <a href="chat/">Entra al chat</a> ·
+      ¿Prefieres probar primero? Entra como invitado, sin registro.</p>
+    </form>
+  </section>
+</main>
+
+<footer class="foot">
+  <p>© 2026 ONEchat · <a href="./">Inicio</a> · <a href="comunidad.html">Comunidad</a> ·
+  <a href="chat/">Entrar al chat</a> · Contacto:
+  <a href="mailto:support@getonechat.com">support@getonechat.com</a></p>
+</footer>
+
+<script type="module">
+  // Contador de visitas del sitio (registra el origen).
+  import "./assets/site.js";
+</script>
+<script type="module">
+  import { createClient } from "https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm";
+
+  // Cliente propio para el registro: NO reutiliza la sesión
+  // anónima de lectura del sitio.
+  const db = createClient(
+    "https://jsdyoqmgdkqlkucebjmt.supabase.co",
+    "sb_publishable_FE28e094cucvLYdDFlnxKQ_dxlKjXO-"
+  );
+
+  const form = document.getElementById("regForm");
+  const btn = document.getElementById("regBtn");
+  const msg = document.getElementById("regMsg");
+
+  function show(text, ok) {
+    msg.textContent = text;
+    msg.className = "reg-msg " + (ok ? "ok" : "err");
+  }
+
+  form.addEventListener("submit", async (e) => {
+    e.preventDefault();
+    const nick = document.getElementById("regNick").value.trim();
+    const email = document.getElementById("regEmail").value.trim();
+    const pass = document.getElementById("regPass").value;
+    const pass2 = document.getElementById("regPass2").value;
+
+    if (!/^[A-Za-z0-9_.-]{3,20}$/.test(nick)) {
+      show("El nickname debe tener de 3 a 20 caracteres: letras, números, guion, punto o guion bajo.", false);
+      return;
+    }
+    if (pass.length < 6) {
+      show("La contraseña debe tener al menos 6 caracteres.", false);
+      return;
+    }
+    if (pass !== pass2) {
+      show("Las contraseñas no coinciden.", false);
+      return;
+    }
+
+    btn.disabled = true;
+    show("Creando tu cuenta…", true);
+    try {
+      const { data, error } = await db.auth.signUp({
+        email,
+        password: pass,
+        options: {
+          data: { nickname: nick },
+          emailRedirectTo: "https://getonechat.com/chat/",
+        },
+      });
+      if (error) {
+        const m = (error.message || "").toLowerCase();
+        if (m.includes("already") || m.includes("registered")) {
+          show("Ese correo ya tiene una cuenta. Entra al chat con tu correo y tu contraseña.", false);
+        } else if (m.includes("password")) {
+          show("La contraseña no cumple los requisitos mínimos (6 caracteres).", false);
+        } else if (m.includes("rate") || m.includes("limit")) {
+          show("Demasiados intentos seguidos. Espera unos minutos y vuelve a intentarlo.", false);
+        } else {
+          show("No se pudo crear la cuenta. Revisa los datos e inténtalo de nuevo.", false);
+        }
+        btn.disabled = false;
+        return;
+      }
+      if (data.user && Array.isArray(data.user.identities) &&
+          data.user.identities.length === 0) {
+        show("Ese correo ya tiene una cuenta. Entra al chat con tu correo y tu contraseña.", false);
+        btn.disabled = false;
+        return;
+      }
+      if (data.session) {
+        show("¡Tu cuenta quedó creada! Ya puedes entrar al chat.", true);
+        setTimeout(() => { location.href = "chat/"; }, 1600);
+        return;
+      }
+      show("¡Cuenta creada! Te enviamos un correo de confirmación: ábrelo y toca el enlace para activar tu cuenta. Después entra al chat con tu nickname o tu correo y tu contraseña.", true);
+      form.reset();
+    } catch (_) {
+      show("Hubo un problema de conexión. Inténtalo de nuevo.", false);
+      btn.disabled = false;
+    }
+  });
+</script>
+
+</body>
+</html>

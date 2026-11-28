@@ -46,3 +46,25 @@ export function lastSeenText(lastSeenAt) {
   const days = Math.floor(hours / 24);
   return `hace ${days} d`;
 }
+
+// Contador de visitas (v1.29): registra el ORIGEN de cada
+// visita a las páginas del sitio (Instagram, buscadores,
+// redes sociales, directo) para el Panel de control de la
+// app. No guarda datos personales: solo la página vista, el
+// referrer y el origen que clasifica el servidor.
+try {
+  fetch(SUPABASE_URL + "/functions/v1/log-web-visit", {
+    method: "POST",
+    keepalive: true,
+    headers: {
+      "Content-Type": "application/json",
+      "apikey": PUBLISHABLE_KEY,
+      "Authorization": "Bearer " + PUBLISHABLE_KEY,
+    },
+    body: JSON.stringify({
+      page: location.pathname,
+      referrer: document.referrer || "",
+      landing: location.href,
+    }),
+  }).catch(() => {});
+} catch (e) { /* El contador jamás debe romper la página. */ }
